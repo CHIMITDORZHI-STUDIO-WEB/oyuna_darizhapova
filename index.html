@@ -217,6 +217,40 @@
       .main { padding: 46px 18px 48px; }
       .name-row h1 { font-size: 24px; }
       .avatar-img { width: 132px; height: 132px; }
+      .cookie-banner { padding: 16px; flex-direction: column; gap: 14px; }
+      .cookie-banner p { font-size: 12px; }
+    }
+
+    /* Cookie Banner */
+    .cookie-banner {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: center; gap: 20px;
+      padding: 18px 28px;
+      background: rgba(7,18,34,.92); backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(0,181,226,.15);
+      box-shadow: 0 -8px 32px rgba(0,0,0,.4);
+      transform: translateY(100%);
+      animation: slideUp .6s ease-out .5s forwards;
+    }
+    @keyframes slideUp { to { transform: translateY(0); } }
+    .cookie-banner.hidden { display: none; }
+    .cookie-banner p {
+      font-size: 13px; line-height: 1.6; color: rgba(255,255,255,.8); margin: 0;
+    }
+    .cookie-banner a {
+      color: var(--cyan); text-decoration: none; white-space: nowrap;
+    }
+    .cookie-banner a:hover { text-decoration: underline; }
+    .cookie-accept {
+      flex-shrink: 0; padding: 10px 24px; border-radius: 999px;
+      font-size: 13px; font-weight: 600; font-family: inherit;
+      color: #fff; border: none; cursor: pointer;
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      box-shadow: 0 4px 16px rgba(0,181,226,.3);
+      transition: all .3s;
+    }
+    .cookie-accept:hover {
+      box-shadow: 0 6px 24px rgba(0,181,226,.5); transform: translateY(-1px);
     }
   </style>
 </head>
@@ -335,6 +369,15 @@
     function toggleQR(){var m=document.getElementById('qrModal');m.classList.toggle('active');if(m.classList.contains('active')){var q=document.getElementById('qrImg');if(!q.src||q.src===window.location.href)q.src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+encodeURIComponent(window.location.href)+'&color=071222'}}
     function downloadVCard(){var v='BEGIN:VCARD\nVERSION:3.0\nFN:Дарижапова Оюна\nTITLE:Партнер компании MWR Life\nNOTE:Путешествую в люксе по оптовым ценам.\nURL:'+window.location.href+'\nEND:VCARD';var b=new Blob([v],{type:'text/vcard'});var u=URL.createObjectURL(b);var a=document.createElement('a');a.href=u;a.download='Darizhapova_Oyuna.vcf';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u)}
     async function handleShare(){if(navigator.share){try{await navigator.share({title:'Дарижапова Оюна',url:window.location.href})}catch(e){}}else{navigator.clipboard.writeText(window.location.href);alert('Ссылка скопирована!')}}
+  </script>
+
+  <div class="cookie-banner" id="cookieBanner">
+    <p>Мы используем файлы cookie, чтобы сайт работал лучше. Оставаясь с нами, вы соглашаетесь с <a href="privacy-policy.html">Политикой конфиденциальности</a>.</p>
+    <button class="cookie-accept" onclick="acceptCookies()">Принять</button>
+  </div>
+  <script>
+    if(localStorage.getItem('cookiesAccepted')){document.getElementById('cookieBanner').classList.add('hidden')}
+    function acceptCookies(){localStorage.setItem('cookiesAccepted','1');document.getElementById('cookieBanner').classList.add('hidden')}
   </script>
 </body>
 </html>
